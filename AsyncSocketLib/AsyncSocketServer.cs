@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace AsyncSocketLib
 {
@@ -11,8 +13,14 @@ namespace AsyncSocketLib
         private IPAddress _ipAddress;
         private int _port;
         private TcpListener _tcpListener;
+        private List<TcpClient> _tcpClients;
 
         public bool KeepRunning { get; set; }
+
+        public AsyncSocketServer()
+        {
+            _tcpClients = new List<TcpClient>();
+        }
 
 
         public async void StartListeningForIncomingConnection(IPAddress ipAddress = null, int port = 23000)
@@ -40,9 +48,11 @@ namespace AsyncSocketLib
                 {
                     var returnedByAccept = await _tcpListener.AcceptTcpClientAsync();
 
-                    Debug.WriteLine($"Client connected successfully: {returnedByAccept}.");
+                    _tcpClients.Add(returnedByAccept);
 
-                    TakeCaraOfTCPClient(returnedByAccept);
+                    Debug.WriteLine($"Client connected successfully, count: {_tcpClients.Count} - {returnedByAccept.Client.RemoteEndPoint}.");
+
+                    TakeCaraOfTcpClient(returnedByAccept);
                 }
 
             }
@@ -56,21 +66,18 @@ namespace AsyncSocketLib
 
         }
 
-        private async void TakeCaraOfTCPClient(TcpClient tcpClient)
+        private async void TakeCaraOfTcpClient(TcpClient tcpClient)
         {
-            NetworkStream networkStream = null;
-            StreamReader streamReader = null;
-
             try
             {
-                networkStream = tcpClient.GetStream();
-                streamReader = new StreamReader(networkStream);
+                var networkStream = tcpClient.GetStream();
+                var streamReader = new StreamReader(networkStream);
 
                 var buff = new char[64];
 
                 while (KeepRunning)
                 {
-                    Debug.WriteLine("*** Ready to read");
+                    Debug.WriteLine("*** Ready to read.");
 
                     var nRet = await streamReader.ReadAsync(buff, 0, buff.Length);
 
@@ -78,24 +85,56 @@ namespace AsyncSocketLib
 
                     if (nRet == 0)
                     {
+                        RemoveClient(tcpClient);
                         Debug.WriteLine("Socket disconnected.");
                         break;
                     }
 
                     var receivedText = new string(buff);
 
-                    Debug.WriteLine($"*** RECEIVED: {receivedText}");
+                    Debug.WriteLine($"*** RECEIVED: {receivedText}.");
 
-                    Array.Clear(buff,0, buff.Length);
-                   
+                    Array.Clear(buff, 0, buff.Length);
+
                 }
 
             }
             catch (Exception exception)
             {
+                RemoveClient(tcpClient);
                 Console.WriteLine(exception);
 
             }
+        }
+
+        private void RemoveClient(TcpClient tcpClient)
+        {
+            if (_tcpClients.Contains(tcpClient))
+            {
+                _tcpClients.Remove(tcpClient);
+                Debug.WriteLine($"Client removed, count: {_tcpClients.Count}");
+            }
+        }
+
+        public void SendToAll(string message)
+        {
+            if (string.IsNullOrEmpty(message))
+                return;
+
+            try
+            {
+                var buffMessage = Encoding.ASCII.GetBytes(message);
+
+                foreach (var tcpClient in _tcpClients)
+                   tcpClient.GetStream().WriteAsync(buffMessage, 0, buffMessage.Length);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
     }
 }

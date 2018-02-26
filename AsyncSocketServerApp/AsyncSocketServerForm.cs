@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using AsyncSocketLib;
 
@@ -19,6 +20,17 @@ namespace AsyncSocketServerApp
 
             _asyncSocketServer.StartListeningForIncomingConnection();
 
+            if (!(sender is Button button)) return;
+
+            button.BackColor = Color.Green;
+            button.ForeColor = Color.White;
+            
+        }
+
+        private void SendAll_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtMessage?.Text))
+                _asyncSocketServer?.SendToAll(txtMessage.Text.Trim());
         }
     }
 }
