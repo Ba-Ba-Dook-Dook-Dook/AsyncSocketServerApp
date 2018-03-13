@@ -20,11 +20,13 @@ namespace AsyncSocketServerApp
 
             _asyncSocketServer.StartListeningForIncomingConnection();
 
-            if (!(sender is Button button)) return;
+            if (lblServerStatus == null) return;
 
-            button.BackColor = Color.Green;
-            button.ForeColor = Color.White;
-            
+            lblServerStatus.Text = @"Listening...";
+            lblServerStatus.BackColor = Color.Green;
+            lblServerStatus.ForeColor = Color.White;
+
+            pnlMessages.Visible = true;
         }
 
         private void SendAll_Click(object sender, EventArgs e)
@@ -32,5 +34,25 @@ namespace AsyncSocketServerApp
             if (!string.IsNullOrEmpty(txtMessage?.Text))
                 _asyncSocketServer?.SendToAll(txtMessage.Text.Trim());
         }
+
+        private void StopServer_Click(object sender, EventArgs e)
+        {
+            _asyncSocketServer.StopServer();
+
+            if (lblServerStatus == null) return;
+
+            lblServerStatus.Text = @"Stopped!";
+            lblServerStatus.BackColor = Color.Red;
+            lblServerStatus.ForeColor = Color.White;
+
+            pnlMessages.Visible = false;
+
+        }
+
+        private void AsyncServerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _asyncSocketServer?.StopServer();
+        }
+
     }
 }

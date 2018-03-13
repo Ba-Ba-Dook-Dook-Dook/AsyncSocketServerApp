@@ -136,5 +136,24 @@ namespace AsyncSocketLib
             }
 
         }
+
+        public void StopServer()
+        {
+            try
+            {
+                _tcpListener?.Stop();
+
+                if (_tcpClients == null) return;
+
+                foreach (var tcpClient in _tcpClients)
+                    tcpClient.Close();
+
+                _tcpClients.Clear();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
     }
 }
