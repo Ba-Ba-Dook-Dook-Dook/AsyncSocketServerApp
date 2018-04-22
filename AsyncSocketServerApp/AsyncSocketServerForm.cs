@@ -13,6 +13,8 @@ namespace AsyncSocketServerApp
         {
             InitializeComponent();
             _asyncSocketServer = new AsyncSocketServer();
+            _asyncSocketServer.RaiseClienteConnectedEvent += HandleClientConnected;
+            _asyncSocketServer.RaiseMessageReceivedEvent += HandleMessageReceived;
         }
 
         private void AcceptConnection_Click(object sender, EventArgs e)
@@ -52,6 +54,19 @@ namespace AsyncSocketServerApp
         private void AsyncServerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _asyncSocketServer?.StopServer();
+        }
+
+        private void HandleClientConnected(object sender, ClientConnetedEventArgs clientConnetedEventArgs)
+        {
+            txtClients.AppendText($"{DateTime.Now} - New client connected: {clientConnetedEventArgs.NewClient}{Environment.NewLine}");
+        }
+
+        public void HandleMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            if (e.Client == null) return;
+
+            if (e.MessageReceived != null)
+                txtMessage.AppendText($"{DateTime.Now} - Received from {e.Client} : {e.MessageReceived} {Environment.NewLine}");
         }
 
     }

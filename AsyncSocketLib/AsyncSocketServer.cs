@@ -15,13 +15,15 @@ namespace AsyncSocketLib
         private TcpListener _tcpListener;
         private List<TcpClient> _tcpClients;
 
+        public EventHandler<ClientConnetedEventArgs> RaiseClienteConnectedEvent;
+        public EventHandler<MessageReceivedEventArgs> RaiseMessageReceivedEvent;
+
         public bool KeepRunning { get; set; }
 
         public AsyncSocketServer()
         {
             _tcpClients = new List<TcpClient>();
         }
-
 
         public async void StartListeningForIncomingConnection(IPAddress ipAddress = null, int port = 23000)
         {
@@ -52,7 +54,12 @@ namespace AsyncSocketLib
 
                     Debug.WriteLine($"Client connected successfully, count: {_tcpClients.Count} - {returnedByAccept.Client.RemoteEndPoint}.");
 
-                    TakeCaraOfTcpClient(returnedByAccept);
+                    TakeCareOfTcpClient(returnedByAccept);
+
+                    var eClientConnected = new ClientConnetedEventArgs(returnedByAccept.Client.RemoteEndPoint.ToString());
+
+                    OnRaiseClienteConnectedEvent(eClientConnected);
+
                 }
 
             }
@@ -61,12 +68,9 @@ namespace AsyncSocketLib
                 Debug.WriteLine(e);
             }
 
-
-
-
         }
 
-        private async void TakeCaraOfTcpClient(TcpClient tcpClient)
+        private async void TakeCareOfTcpClient(TcpClient tcpClient)
         {
             try
             {
@@ -93,6 +97,8 @@ namespace AsyncSocketLib
                     var receivedText = new string(buff);
 
                     Debug.WriteLine($"*** RECEIVED: {receivedText}.");
+
+                    OnRaiseMessageReceivedEvent(new MessageReceivedEventArgs(tcpClient.Client.RemoteEndPoint.ToString(), receivedText));
 
                     Array.Clear(buff, 0, buff.Length);
 
@@ -126,7 +132,7 @@ namespace AsyncSocketLib
                 var buffMessage = Encoding.ASCII.GetBytes(message);
 
                 foreach (var tcpClient in _tcpClients)
-                   tcpClient.GetStream().WriteAsync(buffMessage, 0, buffMessage.Length);
+                    tcpClient.GetStream().WriteAsync(buffMessage, 0, buffMessage.Length);
 
             }
             catch (Exception e)
@@ -154,6 +160,20 @@ namespace AsyncSocketLib
             {
                 Debug.WriteLine(e);
             }
+        }
+
+        protected void OnRaiseClienteConnectedEvent(ClientConnetedEventArgs e)
+        {
+            var handler = RaiseClienteConnectedEvent;
+
+            handler?.Invoke(this, e);
+        }
+
+        protected void OnRaiseMessageReceivedEvent(MessageReceivedEventArgs e)
+        {
+            var handler = RaiseMessageReceivedEvent;
+
+            handler?.Invoke(this, e);
         }
     }
 }

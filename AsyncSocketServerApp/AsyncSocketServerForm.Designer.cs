@@ -35,6 +35,8 @@
             this.SendAll = new System.Windows.Forms.Button();
             this.StopServer = new System.Windows.Forms.Button();
             this.lblServerStatus = new System.Windows.Forms.Label();
+            this.txtClients = new System.Windows.Forms.TextBox();
+            this.lblClients = new System.Windows.Forms.Label();
             this.pnlMessages.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,12 +55,14 @@
             // 
             this.pnlMessages.AutoSize = true;
             this.pnlMessages.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlMessages.Controls.Add(this.lblClients);
             this.pnlMessages.Controls.Add(this.labelMessage);
+            this.pnlMessages.Controls.Add(this.txtClients);
             this.pnlMessages.Controls.Add(this.txtMessage);
             this.pnlMessages.Controls.Add(this.SendAll);
             this.pnlMessages.Location = new System.Drawing.Point(12, 150);
             this.pnlMessages.Name = "pnlMessages";
-            this.pnlMessages.Size = new System.Drawing.Size(263, 145);
+            this.pnlMessages.Size = new System.Drawing.Size(872, 145);
             this.pnlMessages.TabIndex = 4;
             this.pnlMessages.Visible = false;
             // 
@@ -76,13 +80,13 @@
             this.txtMessage.Location = new System.Drawing.Point(1, 39);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(259, 74);
+            this.txtMessage.Size = new System.Drawing.Size(451, 74);
             this.txtMessage.TabIndex = 5;
             // 
             // SendAll
             // 
             this.SendAll.AutoSize = true;
-            this.SendAll.Location = new System.Drawing.Point(185, 119);
+            this.SendAll.Location = new System.Drawing.Point(19, 119);
             this.SendAll.Name = "SendAll";
             this.SendAll.Size = new System.Drawing.Size(75, 23);
             this.SendAll.TabIndex = 4;
@@ -111,11 +115,28 @@
             this.lblServerStatus.TabIndex = 6;
             this.lblServerStatus.Text = "Initialized";
             // 
+            // txtClients
+            // 
+            this.txtClients.Location = new System.Drawing.Point(458, 39);
+            this.txtClients.Multiline = true;
+            this.txtClients.Name = "txtClients";
+            this.txtClients.Size = new System.Drawing.Size(411, 74);
+            this.txtClients.TabIndex = 7;
+            // 
+            // lblClients
+            // 
+            this.lblClients.AutoSize = true;
+            this.lblClients.Location = new System.Drawing.Point(458, 23);
+            this.lblClients.Name = "lblClients";
+            this.lblClients.Size = new System.Drawing.Size(38, 13);
+            this.lblClients.TabIndex = 8;
+            this.lblClients.Text = "Clients";
+            // 
             // AsyncServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 307);
+            this.ClientSize = new System.Drawing.Size(905, 319);
             this.Controls.Add(this.lblServerStatus);
             this.Controls.Add(this.StopServer);
             this.Controls.Add(this.pnlMessages);
@@ -139,6 +160,8 @@
         private System.Windows.Forms.Button SendAll;
         private System.Windows.Forms.Button StopServer;
         private System.Windows.Forms.Label lblServerStatus;
+        private System.Windows.Forms.TextBox txtClients;
+        private System.Windows.Forms.Label lblClients;
     }
 }
 
