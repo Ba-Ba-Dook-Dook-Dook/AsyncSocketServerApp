@@ -1,4 +1,6 @@
-﻿namespace AsyncSocketServerApp
+﻿using System;
+
+namespace AsyncSocketServerApp
 {
     partial class AsyncServerForm
     {
@@ -30,13 +32,12 @@
         {
             this.AcceptConnection = new System.Windows.Forms.Button();
             this.pnlMessages = new System.Windows.Forms.Panel();
+            this.txtClients = new System.Windows.Forms.TextBox();
+            this.StopServer = new System.Windows.Forms.Button();
+            this.lblServerStatus = new System.Windows.Forms.Label();
             this.labelMessage = new System.Windows.Forms.Label();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.SendAll = new System.Windows.Forms.Button();
-            this.StopServer = new System.Windows.Forms.Button();
-            this.lblServerStatus = new System.Windows.Forms.Label();
-            this.txtClients = new System.Windows.Forms.TextBox();
-            this.lblClients = new System.Windows.Forms.Label();
             this.pnlMessages.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,44 +56,23 @@
             // 
             this.pnlMessages.AutoSize = true;
             this.pnlMessages.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlMessages.Controls.Add(this.lblClients);
             this.pnlMessages.Controls.Add(this.labelMessage);
-            this.pnlMessages.Controls.Add(this.txtClients);
             this.pnlMessages.Controls.Add(this.txtMessage);
             this.pnlMessages.Controls.Add(this.SendAll);
+            this.pnlMessages.Controls.Add(this.txtClients);
             this.pnlMessages.Location = new System.Drawing.Point(12, 150);
             this.pnlMessages.Name = "pnlMessages";
-            this.pnlMessages.Size = new System.Drawing.Size(872, 145);
+            this.pnlMessages.Size = new System.Drawing.Size(884, 224);
             this.pnlMessages.TabIndex = 4;
             this.pnlMessages.Visible = false;
             // 
-            // labelMessage
+            // txtClients
             // 
-            this.labelMessage.AutoSize = true;
-            this.labelMessage.Location = new System.Drawing.Point(1, 20);
-            this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(50, 13);
-            this.labelMessage.TabIndex = 6;
-            this.labelMessage.Text = "Message";
-            // 
-            // txtMessage
-            // 
-            this.txtMessage.Location = new System.Drawing.Point(1, 39);
-            this.txtMessage.Multiline = true;
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(451, 74);
-            this.txtMessage.TabIndex = 5;
-            // 
-            // SendAll
-            // 
-            this.SendAll.AutoSize = true;
-            this.SendAll.Location = new System.Drawing.Point(19, 119);
-            this.SendAll.Name = "SendAll";
-            this.SendAll.Size = new System.Drawing.Size(75, 23);
-            this.SendAll.TabIndex = 4;
-            this.SendAll.Text = "Send To All";
-            this.SendAll.UseVisualStyleBackColor = true;
-            this.SendAll.Click += new System.EventHandler(this.SendAll_Click);
+            this.txtClients.Location = new System.Drawing.Point(8, 3);
+            this.txtClients.Multiline = true;
+            this.txtClients.Name = "txtClients";
+            this.txtClients.Size = new System.Drawing.Size(873, 157);
+            this.txtClients.TabIndex = 7;
             // 
             // StopServer
             // 
@@ -115,28 +95,39 @@
             this.lblServerStatus.TabIndex = 6;
             this.lblServerStatus.Text = "Initialized";
             // 
-            // txtClients
+            // labelMessage
             // 
-            this.txtClients.Location = new System.Drawing.Point(458, 39);
-            this.txtClients.Multiline = true;
-            this.txtClients.Name = "txtClients";
-            this.txtClients.Size = new System.Drawing.Size(411, 74);
-            this.txtClients.TabIndex = 7;
+            this.labelMessage.AutoSize = true;
+            this.labelMessage.Location = new System.Drawing.Point(16, 179);
+            this.labelMessage.Name = "labelMessage";
+            this.labelMessage.Size = new System.Drawing.Size(50, 13);
+            this.labelMessage.TabIndex = 10;
+            this.labelMessage.Text = "Message";
             // 
-            // lblClients
+            // txtMessage
             // 
-            this.lblClients.AutoSize = true;
-            this.lblClients.Location = new System.Drawing.Point(458, 23);
-            this.lblClients.Name = "lblClients";
-            this.lblClients.Size = new System.Drawing.Size(38, 13);
-            this.lblClients.TabIndex = 8;
-            this.lblClients.Text = "Clients";
+            this.txtMessage.Location = new System.Drawing.Point(16, 198);
+            this.txtMessage.Multiline = true;
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.Size = new System.Drawing.Size(784, 23);
+            this.txtMessage.TabIndex = 9;
+            // 
+            // SendAll
+            // 
+            this.SendAll.AutoSize = true;
+            this.SendAll.Location = new System.Drawing.Point(806, 196);
+            this.SendAll.Name = "SendAll";
+            this.SendAll.Size = new System.Drawing.Size(75, 23);
+            this.SendAll.TabIndex = 8;
+            this.SendAll.Text = "Send To All";
+            this.SendAll.UseVisualStyleBackColor = true;
+            this.SendAll.Click += new EventHandler(this.SendAll_Click);
             // 
             // AsyncServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(905, 319);
+            this.ClientSize = new System.Drawing.Size(905, 493);
             this.Controls.Add(this.lblServerStatus);
             this.Controls.Add(this.StopServer);
             this.Controls.Add(this.pnlMessages);
@@ -155,13 +146,12 @@
 
         private System.Windows.Forms.Button AcceptConnection;
         private System.Windows.Forms.Panel pnlMessages;
-        private System.Windows.Forms.Label labelMessage;
-        private System.Windows.Forms.TextBox txtMessage;
-        private System.Windows.Forms.Button SendAll;
         private System.Windows.Forms.Button StopServer;
         private System.Windows.Forms.Label lblServerStatus;
         private System.Windows.Forms.TextBox txtClients;
-        private System.Windows.Forms.Label lblClients;
+        private System.Windows.Forms.Label labelMessage;
+        private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.Button SendAll;
     }
 }
 

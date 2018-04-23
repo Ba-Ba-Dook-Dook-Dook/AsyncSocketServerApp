@@ -17,6 +17,7 @@ namespace AsyncSocketLib
 
         public EventHandler<ClientConnetedEventArgs> RaiseClienteConnectedEvent;
         public EventHandler<MessageReceivedEventArgs> RaiseMessageReceivedEvent;
+        public EventHandler<ClientDisconnetedEventArgs> RaiseClientDisconnectedEvent;
 
         public bool KeepRunning { get; set; }
 
@@ -89,6 +90,7 @@ namespace AsyncSocketLib
 
                     if (nRet == 0)
                     {
+                        OnRaiseClientDisconnectedEvent(new ClientDisconnetedEventArgs(tcpClient.Client.RemoteEndPoint.ToString()));
                         RemoveClient(tcpClient);
                         Debug.WriteLine("Socket disconnected.");
                         break;
@@ -175,5 +177,13 @@ namespace AsyncSocketLib
 
             handler?.Invoke(this, e);
         }
+
+        protected void OnRaiseClientDisconnectedEvent(ClientDisconnetedEventArgs e)
+        {
+            var handler = RaiseClientDisconnectedEvent;
+
+            handler?.Invoke(this, e);
+        }
+
     }
 }

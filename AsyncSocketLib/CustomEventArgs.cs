@@ -26,5 +26,20 @@ namespace AsyncSocketLib
         }
     }
 
+    public class ClientDisconnetedEventArgs : EventArgs
+    {
+        public string Client { get; set; }
+
+        public ClientDisconnetedEventArgs(string client)
+        {
+            Client = client;
+        }
+
+
+    }
+
+
+
+
 
 }

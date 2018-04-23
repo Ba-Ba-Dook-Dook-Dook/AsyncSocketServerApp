@@ -15,6 +15,7 @@ namespace AsyncSocketServerApp
             _asyncSocketServer = new AsyncSocketServer();
             _asyncSocketServer.RaiseClienteConnectedEvent += HandleClientConnected;
             _asyncSocketServer.RaiseMessageReceivedEvent += HandleMessageReceived;
+            _asyncSocketServer.RaiseClientDisconnectedEvent += HandleClientDisconnected;
         }
 
         private void AcceptConnection_Click(object sender, EventArgs e)
@@ -66,7 +67,14 @@ namespace AsyncSocketServerApp
             if (e.Client == null) return;
 
             if (e.MessageReceived != null)
-                txtMessage.AppendText($"{DateTime.Now} - Received from {e.Client} : {e.MessageReceived} {Environment.NewLine}");
+                txtClients.AppendText($"{DateTime.Now} - Received from {e.Client} : {e.MessageReceived} {Environment.NewLine}");
+        }
+
+        private void HandleClientDisconnected(object sender, ClientDisconnetedEventArgs e)
+        {
+            if (e.Client == null) return;
+
+                txtClients.AppendText($"{DateTime.Now} - Client {e.Client} disconnected! {Environment.NewLine}");
         }
 
     }
